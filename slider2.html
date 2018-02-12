@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>단방향 slider</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<style>
+		*{
+		  margin: 0;
+		  box-sizing: border-box;
+		}
+		.slider{
+		  position: relative;
+		  width: 400px; 
+		  border: 2px solid red;
+		  /*overflow: hidden;*/
+		}
+		.sliders{
+		  position: relative;
+		  left: 0px; top: 0;
+		  width: 1200px; 
+		  border: 2px solid green;
+		  overflow: hidden;
+		  transition: 0.5s;
+		}
+		.sliders > img{ 
+		  width: 33.33%;
+		  float: left;
+		}
+		button{ padding: 5px 20px; }
+	</style>
+</head>
+<body>
+<h1>jQuery Slider(단방향)</h1>
+<p>좌우 버튼, 자동 재생</p>
+<div class="slider">
+  <div class="sliders">
+    <img src="http://placehold.it/200x100/f80?text=1">
+    <img src="http://placehold.it/200x100/8f0?text=2">
+    <img src="http://placehold.it/200x100/08f?text=3">
+  </div>
+</div>
+<button id="prev">prev</button>
+<button id="next">next</button>
+
+<script>
+
+var img_num = 0;
+var img_length = $('.sliders > img').length;
+var img_width = parseInt($('.slider').css('width'));
+console.log(img_length, img_width);
+
+function play_slider(num){
+	img_num = num;
+	var image_x = -(img_num * img_width);
+
+	$('.sliders').css('left', image_x + 'px');    
+}
+
+// 슬라이더 재생기
+var slider_player = setInterval(function(){
+	if(img_num < img_length - 1){ 
+		img_num++;
+	} else {
+		img_num = 0;
+	}	
+  	play_slider(img_num);
+}, 10000);
+
+$('#prev').click(function(){
+	if(img_num > 0 ){
+		img_num = img_num - 1;
+	} else{ img_num = 2;}	
+	play_slider(img_num);
+});
+
+$('#next').click(function(){
+	if(img_num < img_length-1){
+		img_num = img_num + 1;
+	} else{ img_num = 0;}
+	play_slider(img_num);
+});
+
+
+
+</script>
+</body>
+</html>

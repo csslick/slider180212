@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slider</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<style>
+		*{
+		  margin: 0;
+		}
+		.slider{
+		  position: relative;
+		  width: 200px; height: 100px;
+		  border: 3px solid red;
+		}
+		.sliders{
+		  position: absolute;
+		  left: 0px; top: 0;
+		  width: 600px; height: 100px;
+		  border: 2px solid green;
+		}
+		.sliders > img{ 
+		  width: 33.3%;
+		  float: left;
+		}
+	</style>
+</head>
+<body>
+
+<div class="slider">
+  <div class="sliders">
+    <img src="http://placehold.it/200x100/f80?text=1">
+    <img src="http://placehold.it/200x100/8f0?text=2">
+    <img src="http://placehold.it/200x100/08f?text=3">
+  </div>
+</div>
+
+<script>
+
+var img_num = 0;
+var img_length = $('.sliders > img').length;
+console.log(img_length);
+
+function play_slider(){
+	if(img_num < img_length-1){ 
+		img_num++;
+	} else {
+		img_num = 0;
+	}
+	var image_x = -(img_num * 200);
+	console.log(image_x);
+	$('.sliders').css('left', image_x + 'px');    
+	console.log("img_num=", img_num);  
+}
+
+setInterval(function(){
+  play_slider();
+}, 1000);
+
+	
+</script>
+</body>
+</html>

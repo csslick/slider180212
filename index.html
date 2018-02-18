@@ -12,16 +12,15 @@
 		.slider{
 		  position: relative;
 		  width: 100%; 
-		  border: 2px solid red;
+		  /*border: 2px solid red;*/
 		  /*overflow: hidden;*/
 		}
 		.sliders{
 		  position: relative;
 		  left: 0px; top: 0;
 		  width: 300%; 
-		  border: 2px solid green;
+		  /*border: 2px solid green;*/
 		  overflow: hidden;
-		  /*transition: 0.5s;*/
 		}
 		.sliders > img{ 
 		  width: 33.33%;
@@ -33,19 +32,30 @@
 		}
 		#prev{ left: 10px; top: 50%; }
 		#next{ right: 10px; top: 50%; }
+
+		/* 인디케이터 */
+		#indicator{
+			position: absolute;
+			bottom: 20px; left: 50%;
+			transform: translateX(-50%);
+			list-style-type: none;
+		}
+		#indicator > li{ display: inline-block; padding: 10px;}
 	</style>
 </head>
 <body>
 <h1>jQuery Slider(가변대응, 단방향)</h1>
 <p>좌우 버튼, 자동 재생, 호버시 정지/재시작,리사이즈,제이쿼리 애니메이트</p>
 <div class="slider">
-  <div class="sliders">
-    <img src="http://placehold.it/200x100/f80?text=1">
-    <img src="http://placehold.it/200x100/8f0?text=2">
-    <img src="http://placehold.it/200x100/08f?text=3">
-  </div>
+	<div class="sliders">
+		<img src="http://placehold.it/200x100/f80?text=1">
+		<img src="http://placehold.it/200x100/8f0?text=2">
+		<img src="http://placehold.it/200x100/08f?text=3">
+	</div>
 	<button id="prev">prev</button>
 	<button id="next">next</button>  
+	<ul id="indicator">
+	</ul>
 </div>
 
 
@@ -55,17 +65,29 @@ $(function(){
 
 	var img_num = 0;
 	var img_length = $('.sliders > img').length;
-	var img_width = parseInt($('.slider').css('width'));
-	console.log(img_length, img_width);
+	var slider_width = parseInt($('.slider').css('width'));
+	console.log(img_length, slider_width);
+
+	// 인디케이터
+	for(var i = 0; i < img_length; i++){
+		$('#indicator').append('<li>' + (i+1) + '</li>');
+	}
 
 	function play_slider(num){
 		img_num = num;
-		var image_x = -(img_num * img_width);
+		var image_x = -(img_num * slider_width);
 
 		// $('.sliders').css('left', image_x + 'px'); 
-		$('.sliders').animate({
+		$('.sliders').stop().animate({
 			left: image_x + 'px'
 		});  
+
+		// 인티케이터 업데이트
+		$('#indicator')
+			.find('li')
+			.css('color','#000')
+			.eq(num)
+			.css('color','red');
 	}
 
 	// 슬라이더 재생기
@@ -77,7 +99,7 @@ $(function(){
 		}	
 	  	play_slider(img_num);
 	  	console.log(img_num);
-	}, 1000);
+	}, 5000);
 
 	$('#prev').click(function(){
 		if(img_num > 0 ){
@@ -105,14 +127,15 @@ $(function(){
 				img_num = 0;
 			}	
 		  	play_slider(img_num);
-		}, 1000);
+		}, 2000);
 	});
 
 	// 페이지 리사이즈시 이미지 폭 보정
 	$(window).resize(function(){
-		img_width = parseInt($('.slider').width());
+		clearInterval(slider_player);
+		img_num = 0;
+		slider_width = parseInt($('.slider').css('width'));
 		play_slider(img_num);
-
 	});
 
 });	// end $()
